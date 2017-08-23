@@ -1544,7 +1544,7 @@ void function() { try {
     RECIPE: object_fit_onvideo
     -------------------------------------------------------------
     Author: joevery
-    Description: All websites where object-fit CSS property is used on a video element.
+    Description: Get count of how many times object-fit CSS property is used on a video element on websites.
 */
 void function() {
     window.CSSUsage.StyleWalker.recipesToRun.push(
@@ -1556,8 +1556,9 @@ void function() {
             {
                 if (element.CSSUsage["object-fit"])
                 {
-                    results[nodeName] = results[nodeName] || { count: 0, };
-                    results[nodeName].count++;
+                    var key = "VIDEO" + "_" + "object-fit";
+                    results[key] = results[key] || { count: 0, };
+                    results[key].count++;
                 }
             }
             return results;
