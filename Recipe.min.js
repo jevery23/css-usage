@@ -1541,6 +1541,30 @@ void function() { try {
 } catch (ex) { /* do something maybe */ throw ex; } }();
 
 /* 
+    RECIPE: object_fit_onvideo
+    -------------------------------------------------------------
+    Author: joevery
+    Description: All websites where object-fit CSS property is used on a video element.
+*/
+void function() {
+    window.CSSUsage.StyleWalker.recipesToRun.push(
+        function object_fit_onvideo(element, results) 
+        {
+            var nodeName = element.nodeName;
+
+            if (nodeName == "VIDEO")
+            {
+                if (element.CSSUsage["object-fit"])
+                {
+                    results[nodeName] = results[nodeName] || { count: 0, };
+                    results[nodeName].count++;
+                }
+            }
+            return results;
+        });
+}();
+
+/* 
     RECIPE: z-index on static flex items
     -------------------------------------------------------------
     Author: Francois Remy
