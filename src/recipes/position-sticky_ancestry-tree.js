@@ -6,35 +6,35 @@
 */
 void function() {
     window.CSSUsage.StyleWalker.recipesToRun.push(
-        function position_sticky_ancestry_tree(element, results) 
-        {
+        function position_sticky_ancestry_tree(element, results) {
             // Need this to ensure no errors on html and head tags when running the code below.
             if (!element.CSSUsage) return;
 
-            if (element.CSSUsage["position"] == "sticky")
-            {
-                var nodeName = element.nodeName;
+            var positionStyle = element.CSSUsage["position"];
+            if (positionStyle) {
+                if (positionStyle.valuesArray.includes("sticky")) {
+                    var nodeName = element.nodeName;
 
-                var ancestryTreeArray = [nodeName];
+                    var ancestryTreeArray = [nodeName];
 
-                var currentParent = element.parentElement;
+                    var currentParent = element.parentElement;
 
-                while (currentParent)
-                {
-                    ancestryTreeArray.push(currentParent.nodeName);
-                    currentParent = currentParent.parentElement;
+                    while (currentParent) {
+                        ancestryTreeArray.push(currentParent.nodeName);
+                        currentParent = currentParent.parentElement;
+                    }
+
+                    var ancestryTree = ancestryTreeArray.join("-");
+
+                    results["sticky"] = results["sticky"] || { count: 0, };
+                    results["sticky"].count++;
+
+                    results["sticky"][nodeName] = results["sticky"][nodeName] || { count: 0, };
+                    results["sticky"][nodeName].count++;
+
+                    results["sticky"][nodeName][ancestryTree] = results["sticky"][nodeName][ancestryTree] || { count: 0, };
+                    results["sticky"][nodeName][ancestryTree].count++;
                 }
-
-                var ancestryTree = ancestryTreeArray.join("-");
-
-                results["sticky"] = results["sticky"] || { count: 0, };
-                results["sticky"].count++;
-
-                results["sticky"][nodeName] = results["sticky"][nodeName] || { count: 0, };
-                results["sticky"][nodeName].count++;
-
-                results["sticky"][nodeName][ancestryTree] = results["sticky"][nodeName][ancestryTree] || { count: 0, };
-                results["sticky"][nodeName][ancestryTree].count++;
             }
 
             return results;
