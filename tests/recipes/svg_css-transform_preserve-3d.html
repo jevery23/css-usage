@@ -3,12 +3,18 @@
 <head>
     <title>SVG CSS transform and preserve-3d test</title>
     <style>
-        text, g {
+        g {
             width: 70%;
             margin: 0 auto;
             display: block;
             transform: perspective(300px) rotateX(30deg);
             transform-style: preserve-3d;
+        }
+        text {
+            width: 70%;
+            margin: 0 auto;
+            display: block;
+            transform: perspective(300px);
         }
     </style>
     <script src="../../Recipe.min.js"></script>
