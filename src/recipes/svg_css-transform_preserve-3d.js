@@ -36,12 +36,16 @@ void function() {
                                 if (e.CSSUsage["transform"])
                                 {
                                     var tNodeName = e.nodeName;
+                                    var tValue = e.CSSUsage["transform"];
 
                                     results["svg"]["transform"] = results["svg"]["transform"] || { count: 0, };
                                     results["svg"]["transform"].count++;
 
-                                    results["svg"]["transform"][tNodeName] = results["svg"]["transform"][tNodeName] || { count: 0, };
-                                    results["svg"]["transform"][tNodeName].count++;
+                                    results["svg"]["transform"][tValue] = results["svg"]["transform"][tValue] || { count: 0, };
+                                    results["svg"]["transform"][tValue].count++;
+
+                                    results["svg"]["transform"][tValue][tNodeName] = results["svg"]["transform"][tValue][tNodeName] || { count: 0, };
+                                    results["svg"]["transform"][tValue][tNodeName].count++;
                                 }
 
                                 // We have to check for the transform-style property first before checking its values, otherwise it will hit error.
