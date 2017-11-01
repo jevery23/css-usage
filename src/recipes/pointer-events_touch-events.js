@@ -13,7 +13,7 @@ void function() {
             var script = "pointerup";
 
             // Attribute specified on element.
-            if (element.getAttribute(script))
+            if (element.getAttribute("on" + script))
             {
                 results[script] = results[script] || { count: 0, };
                 results[script].count++;
@@ -22,13 +22,15 @@ void function() {
             if (nodeName === "SCRIPT")
             {
                 // if inline script. ensure that it's not our recipe script and look for string of interest
-                if (element.text !== undefined && element.text.indexOf(script) !== -1)
+                if (element.text !== undefined)
                 {
-                    results[script] = results[script] || { count: 0, };
-                    results[script].count++;
+                    if (element.text.indexOf(".on" + script) !== -1) {
+                        results[script] = results[script] || { count: 0, };
+                        results[script].count++;
+                    }
                 }
-                // if external script, then we have to go and get it.
-                else if (element.src !== undefined && element.src !== "")
+                // if external script, then we have to go and get it and ensure it is not our recipe script.
+                else if (element.src !== undefined && element.src !== "" && !element.src.includes("Recipe.min.js"))
                 {
                     var xhr = new XMLHttpRequest();
                     xhr.open("GET", element.src, false);
