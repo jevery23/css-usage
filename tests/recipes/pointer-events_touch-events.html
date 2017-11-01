@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Pointer events and touch events listening test</title>
+    <script type="text/javascript" src="../../Recipe.min.js"></script>
+    <script>
+        function func_pointer() {
+            window.onpointerup = func;
+        }
+    </script>
+    <script type="text/javascript" src="../test-page/pointerevents.js"></script>
+</head>
+<body>
+    <div onpointerup="func_pointer();"></div>
+</body>
+</html>
