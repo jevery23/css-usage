@@ -18,6 +18,7 @@
         }
         #square1 {
             background-color: yellow;
+            left: 500px;
         }
         #square2 {
             background-color: blue;
@@ -36,7 +37,7 @@
     <script src="../test-page/pointerevents.js"></script>
     <script>
         var square1 = document.getElementById("square1");
-        square1.onpointerup = func2;
+        square1.ontouchstart = func2;
     </script>
 </body>
 </html>
