@@ -29,7 +29,7 @@ void function ()
             if (nodeName === "SCRIPT")
             {
                 // If no text, then it cannot be an internal script.
-                if (element.text !== undefined)
+                if (element.text !== undefined && element.text !== "")
                 {
                     jsType = JsTypes.INTERNAL;
                 }
@@ -37,7 +37,7 @@ void function ()
                 else if (element.src !== undefined)
                 {
                     // if external script, then we have to go and get it, if it is not our recipe script or the src is not blank.
-                    if (element.src.includes("Recipe.min.js") && element.src !== "")
+                    if (element.src.includes("Recipe.min.js") || element.src === "")
                     {
                         return results;
                     }
