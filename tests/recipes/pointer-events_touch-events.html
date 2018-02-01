@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Pointer and touch events listening test</title>
+    <link type="text/css" href="../test-page/style.css" media="all" rel="stylesheet" />
+    <script src="../../Recipe.min.js"></script>
+    <style>
+        .square {
+            position: absolute;
+            left: 20px;
+            top: 10px;
+            bottom: 0px;
+            height: 200px;
+            width: 200px;
+            border: 5px blue solid;
+            -webkit-filter: blur(10px);
+            filter: blur(10px);
+        }
+        #square1 {
+            background-color: yellow;
+            left: 500px;
+        }
+        #square2 {
+            background-color: blue;
+        }
+        #square3 {
+            background-color: green;
+            left: 1000px;
+        }
+    </style>
+</head>
+<body>
+    <!--Cannot test onpointerup on tag, but can test everything else.-->
+    <div class="wrapper">
+        <h1>Pointer and touch events listening test</h1>
+        <div id="shapes">
+            <div class="square" id="square1"></div>
+            <div class="square" id="square2" onload="func"></div>
+            <div class="square" id="square3" onpointerdown="upHandler(event)"></div>
+        </div>
+    </div>
+    <script src="../test-page/pointerevents.js"></script>
+    <script>
+        var square1 = document.getElementById("square1");
+        square1.ontouchstart = func2;
+
+        function upHandler(event) {
+         
+        }
+
+        window.ontouchcancel = upHandler(ev);
+    </script>
+</body>
+</html>
