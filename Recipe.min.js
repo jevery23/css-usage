@@ -1781,104 +1781,8 @@ void function() { try {
 	
 } catch (ex) { /* do something maybe */ throw ex; } }();
 
-///* 
-//    RECIPE: Pointer events and touch events listening counter
-//    -------------------------------------------------------------
-//    Author: joevery
-//    Description: Find instances of listening for pointer and touch events.
-//*/
-
-//void function ()
-//{
-//    window.CSSUsage.StyleWalker.recipesToRun.push(
-//        function pointer_events_touch_events(/*HTML DOM Element*/ element, results)
-//        {
-//            var nodeName = element.nodeName;
-
-//            // We want to catch all instances of listening for these events.
-//            var eventsToCheckFor = ["pointerup", "pointerdown", "pointermove", "pointercancel", "pointerout", "pointerleave", "pointerenter", "pointerover",
-//                "touchstart", "touchend", "touchmove", "touchcancel"];
-
-//            var JsTypes =
-//                {
-//                    ATTRIBUTE: 1,
-//                    INTERNAL: 2,
-//                    EXTERNAL: 3,
-//                }
-
-//            var jsType;
-
-//            // Is element a script tag?
-//            if (nodeName === "SCRIPT") {
-//                // If no text, then it cannot be an internal script.
-//                if (element.text !== undefined && element.text !== "") {
-//                    jsType = JsTypes.INTERNAL;
-//                }
-//                // if no source, then it cannot be an external script. 
-//                else if (element.src !== undefined) {
-//                    // if external script, then we have to go and get it, if it is not our recipe script or the src is not blank.
-//                    if (element.src.includes("Recipe.min.js") || element.src === "") {
-//                        return results;
-//                    }
-//                    else {
-//                        jsType = JsTypes.EXTERNAL;
-
-//                        var xhr = new XMLHttpRequest();
-//                        xhr.open("GET", element.src, false);
-//                        xhr.send();
-//                        if (xhr.status !== 200) {
-//                            // We no longer want to check this element if there was a problem in making request.
-//                            return results;
-//                        }
-//                    }
-//                }
-//            }
-//            // If element is not a script tag, then we will assume that if listening for pointerevents is present that it will be in the form of an attribute.
-//            else {
-//                jsType = JsTypes.ATTRIBUTE;
-//            }
-
-//            for (const event of eventsToCheckFor) {
-//                switch (jsType) {
-//                    case JsTypes.ATTRIBUTE:
-//                        // Attribute specified on element does not seem to work at present, but checking anyway.
-//                        if (element.attributes["on" + event] !== undefined) {
-//                            results[event] = results[event] || { count: 0, };
-//                            results[event].count++;
-//                        }
-//                        break;
-
-//                    case JsTypes.INTERNAL:
-//                        // Check for one instance if none present then abandon.
-//                        if (element.text.indexOf(event) !== -1) {
-//                            results[event] = results[event] || { count: 0, };
-//                            results[event].count += findNumOfStringInstancesInText_CaseSensitive(event, element.text);
-//                        }
-//                        break;
-
-//                    case JsTypes.EXTERNAL:
-//                        // Check for one instance if none present then abandon.
-//                        if (xhr.responseText.indexOf(event) !== -1) {
-//                            results[event] = results[event] || { count: 0, };
-//                            results[event].count += findNumOfStringInstancesInText_CaseSensitive(event, xhr.responseText);
-//                        }
-//                        break;
-//                }
-//            }
-
-//            return results;
-//        });
-
-//    function findNumOfStringInstancesInText_CaseSensitive(string, text)
-//    {
-//        var regex = new RegExp(string, 'g');
-//        var instances = text.match(regex);
-
-//        return instances.length;
-//    }
-//}();
 /* 
-    RECIPE: Pointer events and touch events listening counter
+    CSS Usage RECIPE: Pointer events and touch events listening counter
     -------------------------------------------------------------
     Author: joevery
     Description: Find instances of listening for pointer and touch events.
@@ -1887,33 +1791,102 @@ void function() { try {
 void function ()
 {
     window.CSSUsage.StyleWalker.recipesToRun.push(
-        function pointer_events_touch_events(/*HTML DOM Element*/ element, results)
-        {
-            var nodeName = element.nodeName;
+        function pointer_touch_events(/*HTML DOM Element*/ element, results) {
+            // We want to catch all called instances of on<event> in the element tag and in script on element.
+            var eventsToCheckForWithPropertyValues = new Map(
+                [
+                    ["pointerup", element.onpointerup], ["pointerdown", element.onpointerdown], ["pointermove", element.onpointermove],
+                    ["pointercancel", element.onpointercancel], ["pointerout", element.onpointerout], ["pointerleave", element.onpointerleave],
+                    ["pointerenter", element.onpointerenter], ["pointerover", element.onpointerover], ["touchstart", element.ontouchstart],
+                    ["touchend", element.ontouchend], ["touchmove", element.ontouchmove], ["touchcancel", element.ontouchcancel]
+                ]);
 
-            // We want to catch all instances of listening for these events.
-            var eventsToCheckFor = ["pointerup", "pointerdown", "pointermove", "pointercancel", "pointerout", "pointerleave", "pointerenter", "pointerover",
-                "touchstart", "touchend", "touchmove", "touchcancel"];
-
-            // We just want to check on attributes.
-            for (const event of eventsToCheckFor) {
-                if (element.attributes["on" + event] !== undefined) {
-                    results[event] = results[event] || { count: 0, };
-                    results[event].count++;
+            eventsToCheckForWithPropertyValues.forEach(
+                function (value, key, map) {
+                    // Can be null or undefined depending on the tag.
+                    if ((value !== undefined) && (value !== null)) {
+                        results[key] = results[key] || { count: 0, };
+                        results[key].count++;
+                    }
                 }
-                break;
-            }
+            );
 
             return results;
         });
+}();
+/* 
+    JSAPI RECIPE: Pointer events and touch events listening counter
+    -------------------------------------------------------------
+    Author: joevery
+    Description: Find instances of listening for pointer and touch events.
+*/
 
-    function findNumOfStringInstancesInText_CaseSensitive(string, text)
-    {
-        var regex = new RegExp(string, 'g');
-        var instances = text.match(regex);
+window.debugCSSUsage = true
 
-        return instances.length;
+// We want to catch all called instances of addEventListener("<event we care about>").
+window.apiCounts = new Map(
+    [
+        ["pointerup", 0], ["pointerdown", 0], ["pointermove", 0],
+        ["pointercancel", 0], ["pointerout", 0], ["pointerleave", 0],
+        ["pointerenter", 0], ["pointerover", 0], ["touchstart", 0],
+        ["touchend", 0], ["touchmove", 0], ["touchcancel", 0]
+    ]);;
+
+Element.prototype._addEventListener = Element.prototype.addEventListener;
+Element.prototype.addEventListener = function (a, b, c) {
+    this._addEventListener(a, b, c);
+    if (!this.eventListenerList) this.eventListenerList = {};
+    if (!this.eventListenerList[a]) this.eventListenerList[a] = [];
+    this.eventListenerList[a].push(b);
+
+    // Increment listening count for event argument.
+    if (window.apiCounts.has(a)) {
+        window.apiCounts.set(a, window.apiCounts.get(a) + 1);
     }
+};
+
+void function () {
+    document.addEventListener('DOMContentLoaded', function () {
+        var results = {};
+        var recipeName = "pointer_touch_events";
+
+        // Format the results for Cosmos output.
+        window.apiCounts.forEach(function(value, key, map) {
+            if (value > 0) {
+                results[recipeName] = results[recipeName] || { href: location.href, };
+                results[recipeName][key] = results[recipeName][key] || { count: 0, };
+                results[recipeName][key].count = value;
+            }
+            else {
+                results[recipeName] = results[recipeName] || { href: location.href };
+            }
+        });
+
+        appendResults(results);
+
+        // Add it to the document dom
+        function appendResults(results) {
+            if (window.debugCSSUsage) console.log("Trying to append");
+            var output = document.createElement('script');
+            output.id = "css-usage-tsv-results";
+            output.textContent = JSON.stringify(results);
+            output.type = 'text/plain';
+            document.querySelector('head').appendChild(output);
+            var successfulAppend = checkAppend();
+        }
+
+        function checkAppend() {
+            if (window.debugCSSUsage) console.log("Checking append");
+            var elem = document.getElementById('css-usage-tsv-results');
+            if (elem === null) {
+                if (window.debugCSSUsage) console.log("Element not appended");
+            }
+            else {
+                if (window.debugCSSUsage) console.log("Element successfully found");
+            }
+        }
+
+    });
 }();
 //
 // This file is only here to create the TSV

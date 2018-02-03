@@ -1,17 +1,12 @@
+function eventHandler(event) {
+
+}
+
 function func()
 {
-    var square2 = document.getElementById("square2");
+    var square1 = document.getElementById("square1");
+    square1.ontouchend = eventHandler;
 
-    square2.addEventListener("pointerup", func2);
-}
-
-function func2()
-{
-    alert("Point!!")
-    document.addEventListener("pointerenter", enterHandler);
-}
-
-function enterHandler()
-{
-
+    var square3 = document.getElementById("square3");
+    square3.addEventListener("pointercancel", eventHandler);
 }
