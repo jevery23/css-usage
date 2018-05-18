@@ -12,11 +12,6 @@ void function () {
             // Need this to ensure no errors on html and head tags when running the code below.
             if (!element.CSSUsage) return;
 
-            if (element.CSSUsage["font-family"])
-            {
-                fontUsage = element.CSSUsage["font-family"]
-            }
-
             var cursorCSSUsage = element.CSSUsage["cursor"];
             
             if (cursorCSSUsage)
