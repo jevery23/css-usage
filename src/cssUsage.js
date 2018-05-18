@@ -620,54 +620,62 @@ void function() { try {
 			}
 			
 			// Do the right thing in function of the property
-			if(dontNormalize)
-			{
-				switch(propertyName) {
-					case 'font-family':
-						
-						// Remove various quotes
-						if (value.indexOf("'") != -1 || value.indexOf("‘") != -1 || value.indexOf('"')) {
-							value = value.replace(/('|‘|’|")/g, "");
-						}
-						
-						// Divide at commas to separate different font names
-						value = value.split(/\s*,\s*/g);
-						return value;
-						
-					case '--var':
-					
-						// Replace strings by dummies
-						value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g,' <string> ')
-						value = value.replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g,' <string> ');
-						
-						// Replace url(...) functions by dummies
-						value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1()");
-						value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1()");
-						
-						// Remove group contents (...), {...} and [...]
-						value = value.replace(/[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, " <parentheses-block> ");
-						value = value.replace(/[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, " <parentheses-block> ");
-						value = value.replace(/[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]*)[}])*[}])*[}])*[}])*[}]/g, " <curly-brackets-block> ");
-						value = value.replace(/[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]*)[}])*[}])*[}])*[}])*[}]/g, " <curly-brackets-block> ");
-						value = value.replace(/[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]*)[\]])*[\]])*[\]])*[\]])*[\]]/g, " <square-brackets-block> ");
-						value = value.replace(/[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]*)[\]])*[\]])*[\]])*[\]])*[\]]/g, " <square-brackets-block> ");
-						
-						break;
-						
-					default:
-					
-						// Replace strings by dummies
-						value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g,' <string> ')
-									.replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g,' <string> ');
-						
-						// Replace url(...) functions by dummies
-						if (value.indexOf("(") != -1) {
-							value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
-							value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
-						}
-						
-				}
-			}
+            if (dontNormalize) {
+                switch (propertyName) {
+                    case 'font-family':
+
+                        // Remove various quotes
+                        if (value.indexOf("'") != -1 || value.indexOf("‘") != -1 || value.indexOf('"')) {
+                            value = value.replace(/('|‘|’|")/g, "");
+                        }
+
+                        // Divide at commas to separate different font names
+                        value = value.split(/\s*,\s*/g);
+                        return value;
+
+                    case '--var':
+
+                        // Replace strings by dummies
+                        value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g, ' <string> ')
+                        value = value.replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g, ' <string> ');
+
+                        // Replace url(...) functions by dummies
+                        value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1()");
+                        value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1()");
+
+                        // Remove group contents (...), {...} and [...]
+                        value = value.replace(/[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, " <parentheses-block> ");
+                        value = value.replace(/[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, " <parentheses-block> ");
+                        value = value.replace(/[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]*)[}])*[}])*[}])*[}])*[}]/g, " <curly-brackets-block> ");
+                        value = value.replace(/[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]*)[}])*[}])*[}])*[}])*[}]/g, " <curly-brackets-block> ");
+                        value = value.replace(/[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]*)[\]])*[\]])*[\]])*[\]])*[\]]/g, " <square-brackets-block> ");
+                        value = value.replace(/[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]*)[\]])*[\]])*[\]])*[\]])*[\]]/g, " <square-brackets-block> ");
+
+                        break;
+
+                    default:
+
+                        // Replace strings by dummies
+                        value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g, ' <string> ')
+                            .replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g, ' <string> ');
+
+                        // Replace url(...) functions by dummies
+                        if (value.indexOf("(") != -1) {
+                            value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
+                            value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
+                        }
+
+                }
+            }
+            else {
+                switch (propertyName) {
+                    case 'cursor':
+
+                        // Divide at commas to separate cursor url value and supplied fallback values.
+                        value = value.split(/\s*,\s*/g);
+                        return value;
+                }
+            }
 
 			// Collapse whitespace
 			value = value.trim().replace(/\s+/g, " ");

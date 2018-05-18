@@ -1117,54 +1117,62 @@ void function() { try {
 			}
 			
 			// Do the right thing in function of the property
-			if(dontNormalize)
-			{
-				switch(propertyName) {
-					case 'font-family':
-						
-						// Remove various quotes
-						if (value.indexOf("'") != -1 || value.indexOf("‘") != -1 || value.indexOf('"')) {
-							value = value.replace(/('|‘|’|")/g, "");
-						}
-						
-						// Divide at commas to separate different font names
-						value = value.split(/\s*,\s*/g);
-						return value;
-						
-					case '--var':
-					
-						// Replace strings by dummies
-						value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g,' <string> ')
-						value = value.replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g,' <string> ');
-						
-						// Replace url(...) functions by dummies
-						value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1()");
-						value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1()");
-						
-						// Remove group contents (...), {...} and [...]
-						value = value.replace(/[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, " <parentheses-block> ");
-						value = value.replace(/[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, " <parentheses-block> ");
-						value = value.replace(/[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]*)[}])*[}])*[}])*[}])*[}]/g, " <curly-brackets-block> ");
-						value = value.replace(/[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]*)[}])*[}])*[}])*[}])*[}]/g, " <curly-brackets-block> ");
-						value = value.replace(/[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]*)[\]])*[\]])*[\]])*[\]])*[\]]/g, " <square-brackets-block> ");
-						value = value.replace(/[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]*)[\]])*[\]])*[\]])*[\]])*[\]]/g, " <square-brackets-block> ");
-						
-						break;
-						
-					default:
-					
-						// Replace strings by dummies
-						value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g,' <string> ')
-									.replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g,' <string> ');
-						
-						// Replace url(...) functions by dummies
-						if (value.indexOf("(") != -1) {
-							value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
-							value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
-						}
-						
-				}
-			}
+            if (dontNormalize) {
+                switch (propertyName) {
+                    case 'font-family':
+
+                        // Remove various quotes
+                        if (value.indexOf("'") != -1 || value.indexOf("‘") != -1 || value.indexOf('"')) {
+                            value = value.replace(/('|‘|’|")/g, "");
+                        }
+
+                        // Divide at commas to separate different font names
+                        value = value.split(/\s*,\s*/g);
+                        return value;
+
+                    case '--var':
+
+                        // Replace strings by dummies
+                        value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g, ' <string> ')
+                        value = value.replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g, ' <string> ');
+
+                        // Replace url(...) functions by dummies
+                        value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1()");
+                        value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1()");
+
+                        // Remove group contents (...), {...} and [...]
+                        value = value.replace(/[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, " <parentheses-block> ");
+                        value = value.replace(/[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, " <parentheses-block> ");
+                        value = value.replace(/[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]*)[}])*[}])*[}])*[}])*[}]/g, " <curly-brackets-block> ");
+                        value = value.replace(/[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]+|[{](?:[^{}]*)[}])*[}])*[}])*[}])*[}]/g, " <curly-brackets-block> ");
+                        value = value.replace(/[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]*)[\]])*[\]])*[\]])*[\]])*[\]]/g, " <square-brackets-block> ");
+                        value = value.replace(/[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]+|[\[](?:[^\[\]]*)[\]])*[\]])*[\]])*[\]])*[\]]/g, " <square-brackets-block> ");
+
+                        break;
+
+                    default:
+
+                        // Replace strings by dummies
+                        value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g, ' <string> ')
+                            .replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g, ' <string> ');
+
+                        // Replace url(...) functions by dummies
+                        if (value.indexOf("(") != -1) {
+                            value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
+                            value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
+                        }
+
+                }
+            }
+            else {
+                switch (propertyName) {
+                    case 'cursor':
+
+                        // Divide at commas to separate cursor url value and supplied fallback values.
+                        value = value.split(/\s*,\s*/g);
+                        return value;
+                }
+            }
 
 			// Collapse whitespace
 			value = value.trim().replace(/\s+/g, " ");
@@ -1789,115 +1797,73 @@ void function() { try {
 } catch (ex) { /* do something maybe */ throw ex; } }();
 
 /* 
-    RECIPE: browserDownloadUrls
+    RECIPE: cursorUsage
     -------------------------------------------------------------
-    Author: Morgan, Lia, Joel, Malick
-    Description: Looks for the download urls of other browsers
+    Author: John Every
+    Description: Find sites that use the CSS Cursor property and take URL values given and coords.
 */
 
+void function () {
+    window.CSSUsage.StyleWalker.recipesToRun.push(
+        function cursorUsage(element, results)
+        {
+            // Need this to ensure no errors on html and head tags when running the code below.
+            if (!element.CSSUsage) return;
 
-void function() {
-    window.CSSUsage.StyleWalker.recipesToRun.push( function browserDownloadUrls( element, results) {
-        //tests for browser download urls
-        var linkList = [{url:"https://www.google.com/chrome/", name:"Chrome"}, 
-        {url:"https://www.google.com/intl/en/chrome/browser/desktop/index.html", name:"Chrome"},
-        {url:"https://support.microsoft.com/en-us/help/17621/internet-explorer-downloads", name:"InternetExplorer"}, 
-        {url:"http://windows.microsoft.com/en-US/internet-explorer/downloads/ie", name:"InternetExplorer"}, 
-        {url:"https://www.mozilla.org/en-US/firefox/", name:"Firefox"}, 
-        {url:"https://www.apple.com/safari/", name:"Safari"}, 
-        {url:"https://support.apple.com/en-us/HT204416", name:"Safari"},
-        {url:"http://www.opera.com/download", name:"Opera"},
-        {url:"https://www.microsoft.com/en-us/download/details.aspx?id=48126", name:"Edge"}];
-        for(var j = 0; j < linkList.length; j++) {
-            if(element.getAttribute("href") != null) {
-                if(element.getAttribute("href").indexOf(linkList[j].url) != -1 ) {
-                    results[linkList[j].name] = results[linkList[j].name] || {count: 0};
-                    results[linkList[j].name].count++;
-                }
+            if (element.CSSUsage["font-family"])
+            {
+                fontUsage = element.CSSUsage["font-family"]
             }
-            if (element.src != null) {
-                if(element.src.indexOf(linkList[j].url) != -1 ) {
-                    results[linkList[j].name] = results[linkList[j].name] || {count: 0};
-                    results[linkList[j].name].count++;
-                }
-            }
-        }
-    });
-}();
-/* 
-    RECIPE: imgEdgeSearch
-    -------------------------------------------------------------
-    Author: Morgan, Lia, Joel, Malick
-    Description: Looking for sites that do not include edge as a supported browser
-*/
 
-void function() {
-    window.CSSUsage.StyleWalker.recipesToRun.push( function imgEdgeSearch( element, results) {
-        //tests for images
-        if(element.nodeName == "IMG") {
-            var browsers = ["internetexplorer","ie","firefox","chrome","safari","edge", "opera"];
-            for(var i = 0; i < browsers.length; i++) {
-                if(element.getAttribute("alt").toLowerCase().indexOf(browsers[i]) != -1|| element.getAttribute("src").toLowerCase().indexOf(browsers[i]) != -1) {
-                    results[browsers[i]] = results[browsers[i]] || {count: 0, container: ""};
-                    results[browsers[i]].count++;
-                    var parent = element.parentElement;
-
-                    if(parent) {
-                        var outer = element.parentElement.outerHTML;
-                        var val = outer.replace(element.parentElement.innerHTML, "");
-                        results[browsers[i]].container = val;
-                    }
-                }
+            var cursorCSSUsage = element.CSSUsage["cursor"];
             
-            }
-        }
+            if (cursorCSSUsage)
+            {
+                results["cursor"] = results["cursor"] || { count: 0, };
+                results["cursor"].count++;
 
-        return results;
-    });
-}();
-/* 
-    RECIPE: unsupported browser
-    -------------------------------------------------------------
-    Author: Morgan Graham, Lia Hiscock
-    Description: Looking for phrases that tell users that Edge is not supported, or to switch browers. 
-*/
+                var urlExtension;
+                var isHotSpotFound = false;
 
-void function() {
-    window.CSSUsage.StyleWalker.recipesToRun.push( function unsupportedBrowser( element, results) {        
-        //tests for phrases
-        var switchPhraseString = new RegExp("((?:Switch to|Get|Download|Install)(?:\\w|\\s)+(?:Google|Chrome|Safari|firefox|Opera|Internet Explorer|IE))","i");
-        var supportedPhraseString = new RegExp("((?:browser|Edge)(?:\\w|\\s)+(?:isn't|not|no longer)(?:\\w|\\s)+(?:supported|compatible))", "i");
-        var needles = [{str:switchPhraseString, name:"switchPhrase"},
-                        {str:supportedPhraseString, name:"supportedPhrase"}];;
+                // Even if the values for url or hotspots are invalid, it suggests their still trying to use it, so I error check as best I can.
+                // Hard to check for valid url for example, how would you know?!
+                for (var i = 0; i < cursorCSSUsage.valuesArray.length; ++i)
+                {
+                    // I assumed that the array would be split on commas, but it seems to be split on forward slashes and spaces.
+                    // This has now been changed to what I would expect in CssUsage.js file.
+                    var partsOfValue = cursorCSSUsage.valuesArray[i].split(" ", 3);
+                    if (partsOfValue[0].includes("url("))
+                    {
+                        results["cursor"]["urls"] = results["cursor"]["urls"] || { count: 0, };
+                        results["cursor"]["urls"].count++;
 
-        for(var i = 0; i < needles.length; i++) {
-            var found = element.textContent.match(needles[i].str);            
-            if(found) {
-                if(found.length > 0 && found !== (null || undefined)) {
-                    results[needles[i].name] = results[needles[i].name] || {count: 0, match: "", container: ""};
-                    results[needles[i].name].count++;
+                        var urlValue = partsOfValue[0].substring(4, partsOfValue[0].indexOf(')'));
+                        extensionStartIndex = urlValue.lastIndexOf('.');
 
-                    var parent = element.parentElement;
-                    if(parent) {
-                        var outer = element.parentElement.outerHTML;
-                        var val = outer.replace(element.parentElement.innerHTML, "");
-                        results[needles[i].name].container = val;
+                        if (extensionStartIndex !== -1)
+                        {
+                            // We only want to record the extensions of the links to the file given.
+                            urlExtension = urlValue.substring(extensionStartIndex);
+                            results["cursor"]["urls"][urlExtension] = results["cursor"]["urls"][urlExtension] || { count: 0, };
+                            results["cursor"]["urls"][urlExtension].count++;
+                        }
+
+                        if (partsOfValue.length === 3 && !isHotSpotFound)
+                        {
+                            if (parseInt(partsOfValue[1], 10) && parseInt(partsOfValue[2], 10))
+                            {
+                                // As long as they provide an integer of some degree, then we count it, parseInt provided is quite a soft check.
+                                isHotSpotFound = true;
+                                results["cursor"]["with hotspot"] = results["cursor"]["with hotspot"] || { count: 0, };
+                                results["cursor"]["with hotspot"].count++;
+                            }
+                        }
                     }
-                    
-                    found = remove(found, " ");
-                    results[needles[i].name].match = found.join();
                 }
             }
-        }
-        
-        return results;
-    });
-
-    function remove(array, element) {
-        return array.filter(e => e !== element);
-    }
+            return results;
+        });
 }();
-
 //
 // This file is only here to create the TSV
 // necessary to collect the data from the crawler
