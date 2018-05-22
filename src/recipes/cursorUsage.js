@@ -40,7 +40,7 @@ void function () {
                         if (extensionStartIndex !== -1)
                         {
                             // We only want to record the extensions of the links to the file given.
-                            urlExtension = urlValue.substring(extensionStartIndex, urlValue.length - 1);
+                            urlExtension = urlValue.substring(extensionStartIndex);
                             results["cursor"]["urls"][urlExtension] = results["cursor"]["urls"][urlExtension] || { count: 0, };
                             results["cursor"]["urls"][urlExtension].count++;
                         }
