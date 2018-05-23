@@ -655,21 +655,26 @@ void function() { try {
 
                     default:
 
-                        //// Replace strings by dummies
-                        //value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g, ' <string> ')
-                        //    .replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g, ' <string> ');
+                        // Replace strings by dummies
+                        value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g, ' <string> ')
+                            .replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g, ' <string> ');
 
-                        //// Replace url(...) functions by dummies
-                        //if (value.indexOf("(") != -1) {
-                        //    value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
-                        //    value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
-                        //}
+                        // Replace url(...) functions by dummies
+                        if (value.indexOf("(") != -1) {
+                            value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
+                            value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
+                        }
 
                 }
             }
             else {
                 switch (propertyName) {
                     case 'cursor':
+
+                        // Remove various quotes - Crawler has some issue relating to speech marks, where sometimes they are put around url links (local test page run) and sometimes not (crawler run).
+                        if (value.indexOf("'") != -1 || value.indexOf("‘") != -1 || value.indexOf('"')) {
+                            value = value.replace(/('|‘|’|")/g, "");
+                        }
 
                         // Divide at commas to separate cursor url value and supplied fallback values.
                         value = value.split(/\s*,\s*/g);
