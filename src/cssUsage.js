@@ -605,7 +605,7 @@ void function() { try {
 		/**
 		 * This will transform a value into an array of value identifiers
 		 */ 
-		function createValueArray(value, propertyName, dontNormalize = true) {
+		function createValueArray(value, propertyName, normalize = true) {
 
 			// Trim value on the edges
 			value = value.trim();
@@ -614,13 +614,13 @@ void function() { try {
 			value = value.toLowerCase();
 			
 			// Remove comments and !important
-			if(dontNormalize)
+			if(normalize)
 			{
 				value = value.replace(/([/][*](?:.|\r|\n)*[*][/]|[!]important.*)/g,'');
 			}
 			
 			// Do the right thing in function of the property
-            if (dontNormalize) {
+            if (normalize) {
                 switch (propertyName) {
                     case 'font-family':
 
@@ -655,15 +655,15 @@ void function() { try {
 
                     default:
 
-                        // Replace strings by dummies
-                        value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g, ' <string> ')
-                            .replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g, ' <string> ');
+                        //// Replace strings by dummies
+                        //value = value.replace(/"([^"\\]|\\[^"\\]|\\\\|\\")*"/g, ' <string> ')
+                        //    .replace(/'([^'\\]|\\[^'\\]|\\\\|\\')*'/g, ' <string> ');
 
-                        // Replace url(...) functions by dummies
-                        if (value.indexOf("(") != -1) {
-                            value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
-                            value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
-                        }
+                        //// Replace url(...) functions by dummies
+                        //if (value.indexOf("(") != -1) {
+                        //    value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
+                        //    value = value.replace(/([a-z]?)[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]+|[(](?:[^()]*)[)])*[)])*[)])*[)])*[)]/g, "$1() ");
+                        //}
 
                 }
             }
