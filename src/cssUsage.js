@@ -614,7 +614,7 @@ void function() { try {
 			value = value.toLowerCase();
 			
 			// Do the right thing in function of the property
-            if (dontNormalize) {
+            if (!dontNormalize) {
 
 				// Remove comments and !important
 				value = value.replace(/([/][*](?:.|\r|\n)*[*][/]|[!]important.*)/g,'');
